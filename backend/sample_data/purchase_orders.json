@@ -1,0 +1,83 @@
+[
+  {
+    "po_number": "PO-10234",
+    "vendor_name": "Brightline Office Supplies",
+    "po_amount": 4820.00,
+    "currency": "USD",
+    "date_issued": "2026-09-02",
+    "tolerance_pct": 2.0,
+    "description": "Q4 office supplies restock - 3rd floor"
+  },
+  {
+    "po_number": "PO-10410",
+    "vendor_name": "Meridian IT Services",
+    "po_amount": 15600.00,
+    "currency": "USD",
+    "date_issued": "2026-09-10",
+    "tolerance_pct": 1.5,
+    "description": "Managed IT support - September retainer + on-site hours"
+  },
+  {
+    "po_number": "PO-10588",
+    "vendor_name": "Alcove Facilities Group",
+    "po_amount": 3100.00,
+    "currency": "USD",
+    "date_issued": "2026-08-22",
+    "tolerance_pct": 3.0,
+    "description": "Facilities Q3 contract - HVAC maintenance"
+  },
+  {
+    "po_number": "PO-10777",
+    "vendor_name": "Nordgate Logistics",
+    "po_amount": 12000.00,
+    "currency": "USD",
+    "date_issued": "2026-09-01",
+    "tolerance_pct": 2.0,
+    "description": "Freight contract - warehouse transfer, billed in two shipments"
+  },
+  {
+    "po_number": "PO-10890",
+    "vendor_name": "Solara Print & Media",
+    "po_amount": 2275.00,
+    "currency": "USD",
+    "date_issued": "2026-09-15",
+    "tolerance_pct": 2.0,
+    "description": "Marketing collateral print run - Q4 campaign"
+  },
+  {
+    "po_number": "PO-10915",
+    "vendor_name": "Fenwick & Cole Legal",
+    "po_amount": 9500.00,
+    "currency": "USD",
+    "date_issued": "2026-07-18",
+    "tolerance_pct": 1.0,
+    "description": "Contract review retainer - Q3"
+  },
+  {
+    "po_number": "PO-11002",
+    "vendor_name": "Trellis Cloud Hosting",
+    "po_amount": 6400.00,
+    "currency": "USD",
+    "date_issued": "2026-09-05",
+    "tolerance_pct": 2.5,
+    "description": "Cloud infrastructure - September usage"
+  },
+  {
+    "po_number": "PO-11050",
+    "vendor_name": "Hudson Catering Co.",
+    "po_amount": 1850.00,
+    "currency": "USD",
+    "date_issued": "2026-09-20",
+    "tolerance_pct": 5.0,
+    "description": "All-hands offsite catering"
+  },
+  {
+    "po_number": "PO-11090",
+    "vendor_name": "Pike Street Consulting",
+    "po_amount": 18000.00,
+    "currency": "USD",
+    "date_issued": "2026-08-01",
+    "tolerance_pct": 2.0,
+    "description": "Q3 strategy engagement"
+  }
+]

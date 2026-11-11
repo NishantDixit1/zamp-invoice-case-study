@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f4f5f1;
+  --paper-raised: #ffffff;
+  --ink: #181a1e;
+  --ink-soft: #5b6067;
+  --line: #dcded6;
+
+  --accent: #2b3a67;
+  --accent-soft: #e7eaf2;
+
+  --approved: #1f6b4a;
+  --approved-soft: #e2f2e9;
+  --flagged: #8a5a12;
+  --flagged-soft: #faf0dc;
+  --rejected: #9c3327;
+  --rejected-soft: #fae6e2;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-approved: var(--approved);
+  --color-approved-soft: var(--approved-soft);
+  --color-flagged: var(--flagged);
+  --color-flagged-soft: var(--flagged-soft);
+  --color-rejected: var(--rejected);
+  --color-rejected-soft: var(--rejected-soft);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-data: var(--font-data);
+}
+
+* {
+  border-color: var(--line);
+}
+
+.ledger-paper {
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(24, 26, 30, 0.045) 32px
+  );
+}
+
+.stamp {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  transform: rotate(-2deg);
+  border-width: 2px;
+  border-style: double;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

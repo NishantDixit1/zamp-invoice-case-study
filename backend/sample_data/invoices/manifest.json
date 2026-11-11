@@ -1,0 +1,50 @@
+[
+  {
+    "id": "happy-path",
+    "filename": "01_happy_path.pdf",
+    "label": "Happy Path",
+    "description": "Clean PDF, explicit PO reference, amount within tolerance. Should auto-approve."
+  },
+  {
+    "id": "scanned-invoice",
+    "filename": "02_scanned_invoice.pdf",
+    "label": "Scanned Invoice (no text layer)",
+    "description": "Image-only PDF, forces vision-based extraction via Claude, and is always routed to human sign-off regardless of match quality."
+  },
+  {
+    "id": "missing-fields",
+    "filename": "03_missing_fields.pdf",
+    "label": "Missing Invoice Number / Date",
+    "description": "No invoice number, date, or PO reference printed. Must fuzzy-match by vendor and gets flagged for the missing required fields."
+  },
+  {
+    "id": "split-po-1",
+    "filename": "04a_split_po_part1.pdf",
+    "label": "Split PO | Shipment 1 of 2",
+    "description": "First of two invoices against one PO. Should approve as a partial billing, with remaining balance tracked."
+  },
+  {
+    "id": "split-po-2",
+    "filename": "04b_split_po_part2.pdf",
+    "label": "Split PO | Shipment 2 of 2 (run after part 1)",
+    "description": "Second invoice completes the PO exactly. Cumulative total must be checked against prior invoices, not just this one."
+  },
+  {
+    "id": "duplicate-1st",
+    "filename": "05_duplicate_invoice.pdf",
+    "label": "Duplicate Invoice | 1st submission",
+    "description": "Run this first. Should approve normally."
+  },
+  {
+    "id": "duplicate-2nd",
+    "filename": "05_duplicate_invoice.pdf",
+    "label": "Duplicate Invoice | 2nd submission (run after 1st)",
+    "description": "Identical invoice number + vendor submitted again. Should reject as a duplicate, citing the original run."
+  },
+  {
+    "id": "bonus-unapproved-vendor",
+    "filename": "06_bonus_unapproved_vendor.pdf",
+    "label": "Bonus: Unapproved Vendor",
+    "description": "Not one of the 4 required edge cases. Extra scenario showing a hard REJECT when the vendor itself isn't cleared for payment."
+  }
+]

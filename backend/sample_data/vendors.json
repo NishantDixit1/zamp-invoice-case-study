@@ -1,0 +1,12 @@
+[
+  {"vendor_name": "Brightline Office Supplies", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Meridian IT Services", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Alcove Facilities Group", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Nordgate Logistics", "approved": true, "tax_country": "CA"},
+  {"vendor_name": "Fenwick & Cole Legal", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Solara Print & Media", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Trellis Cloud Hosting", "approved": true, "tax_country": "IE"},
+  {"vendor_name": "Hudson Catering Co.", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Pike Street Consulting", "approved": true, "tax_country": "US"},
+  {"vendor_name": "Quickline Freight Unverified", "approved": false, "tax_country": "US"}
+]
