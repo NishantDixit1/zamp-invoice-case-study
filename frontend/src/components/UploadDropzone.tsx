@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { uploadInvoice } from "@/lib/api";
+import { cacheRun } from "@/lib/runCache";
 
 export function UploadDropzone() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function UploadDropzone() {
     setIsSubmitting(true);
     try {
       const run = await uploadInvoice(file);
+      cacheRun(run);
       router.push(`/runs/${run.id}`);
     } catch {
       setError("Could not start the run. Check the backend is running.");
@@ -41,8 +43,8 @@ export function UploadDropzone() {
         if (file) submitFile(file);
       }}
       onClick={() => inputRef.current?.click()}
-      className={`flex h-full min-h-[160px] cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-6 py-10 text-center transition-colors ${
-        isDragging ? "border-accent bg-accent-soft" : "border-line bg-paper-raised"
+      className={`flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-6 py-8 text-center transition-colors ${
+        isDragging ? "border-accent bg-accent-soft" : "border-line bg-paper-sunken"
       }`}
     >
       <input

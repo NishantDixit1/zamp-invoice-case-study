@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
-const displaySerif = Source_Serif_4({
+const displaySans = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
@@ -30,11 +30,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${displaySerif.variable} ${bodySans.variable} ${dataMono.variable} h-full`}
+      className={`${displaySans.variable} ${bodySans.variable} ${dataMono.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col ledger-paper font-body text-ink">
+      <body className="min-h-full flex flex-col bg-paper font-body text-ink">
         <header className="border-b border-line bg-paper-raised/80 backdrop-blur sticky top-0 z-10">
-          <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+          <div className="mx-auto max-w-[1680px] px-8 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-baseline gap-2">
               <span className="font-display text-xl font-semibold tracking-tight text-ink">
                 Ledger
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </header>
         <main className="flex-1">{children}</main>
         <footer className="border-t border-line">
-          <div className="mx-auto max-w-6xl px-6 py-4 font-data text-[11px] uppercase tracking-widest text-ink-soft">
+          <div className="mx-auto max-w-[1680px] px-8 py-4 font-data text-[11px] uppercase tracking-widest text-ink-soft">
             Zamp | AI Solutions Associate case study (PS-1)
           </div>
         </footer>

@@ -43,7 +43,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
+    <div className="mx-auto max-w-[1680px] px-8 py-10">
       <div className="flex items-end justify-between flex-wrap gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold text-ink">
@@ -63,9 +63,14 @@ export default function DashboardPage() {
         </button>
       </div>
 
-      <section className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
-        <UploadDropzone />
-        <ScenarioLauncher samples={samples} />
+      <section className="mt-10">
+        <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft mb-3">
+          New run
+        </h2>
+        <div className="grid gap-4 lg:grid-cols-[1fr_1.6fr] items-stretch">
+          <UploadDropzone />
+          <ScenarioLauncher samples={samples} />
+        </div>
       </section>
 
       <section className="mt-10">

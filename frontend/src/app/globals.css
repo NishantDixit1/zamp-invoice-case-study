@@ -1,26 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f4f5f1;
-  --paper-raised: #ffffff;
-  --ink: #181a1e;
-  --ink-soft: #5b6067;
-  --line: #dcded6;
+  color-scheme: dark;
+  --paper: #0b0d11;
+  --paper-raised: #16181d;
+  --paper-sunken: #0e1013;
+  --ink: #f1f2f4;
+  --ink-soft: #949ba6;
+  --line: #262a33;
 
-  --accent: #2b3a67;
-  --accent-soft: #e7eaf2;
+  --accent: #818cf8;
+  --accent-soft: rgba(129, 140, 248, 0.14);
 
-  --approved: #1f6b4a;
-  --approved-soft: #e2f2e9;
-  --flagged: #8a5a12;
-  --flagged-soft: #faf0dc;
-  --rejected: #9c3327;
-  --rejected-soft: #fae6e2;
+  --approved: #4ade80;
+  --approved-soft: rgba(74, 222, 128, 0.14);
+  --flagged: #fbbf24;
+  --flagged-soft: rgba(251, 191, 36, 0.14);
+  --rejected: #f87171;
+  --rejected-soft: rgba(248, 113, 113, 0.14);
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-raised: var(--paper-raised);
+  --color-paper-sunken: var(--paper-sunken);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
@@ -40,24 +43,6 @@
 
 * {
   border-color: var(--line);
-}
-
-.ledger-paper {
-  background-color: var(--paper);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 31px,
-    rgba(24, 26, 30, 0.045) 32px
-  );
-}
-
-.stamp {
-  font-family: var(--font-display);
-  letter-spacing: 0.08em;
-  transform: rotate(-2deg);
-  border-width: 2px;
-  border-style: double;
 }
 
 @media (prefers-reduced-motion: reduce) {

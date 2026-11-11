@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from app.config import STAGE_PACING_SECONDS
@@ -9,6 +9,11 @@ from app.pdf_extract import extract_invoice_fields
 from app.matching import run_checks
 
 
+def _utc_now_iso() -> str:
+    # Explicit 'Z' so the frontend never mistakes this for a local-time string.
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
 def _add_stage(run: InvoiceRun, name: str, status: str, detail: str, data=None):
     stages = list(run.stages or [])
     stages.append({
@@ -16,8 +21,8 @@ def _add_stage(run: InvoiceRun, name: str, status: str, detail: str, data=None):
         "status": status,
         "detail": detail,
         "data": data,
-        "started_at": datetime.utcnow().isoformat(),
-        "finished_at": datetime.utcnow().isoformat() if status in ("done", "error") else None,
+        "started_at": _utc_now_iso(),
+        "finished_at": _utc_now_iso() if status in ("done", "error") else None,
     })
     run.stages = stages
 
@@ -31,7 +36,7 @@ def _update_last_stage(run: InvoiceRun, status: str, detail: str, data=None):
     last["detail"] = detail
     if data is not None:
         last["data"] = data
-    last["finished_at"] = datetime.utcnow().isoformat()
+    last["finished_at"] = _utc_now_iso()
     stages[-1] = last
     run.stages = stages
 

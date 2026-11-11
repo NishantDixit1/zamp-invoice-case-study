@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 
 
 class RunSummary(BaseModel):
@@ -18,6 +18,12 @@ class RunSummary(BaseModel):
 
     class Config:
         from_attributes = True
+
+    @field_serializer("created_at")
+    def serialize_created_at(self, dt: datetime, _info):
+        # Stored as naive UTC (datetime.utcnow()); mark it explicitly so the
+        # frontend doesn't misinterpret it as local time.
+        return dt.isoformat() + "Z"
 
 
 class RunDetail(RunSummary):

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import type { RunSummary } from "@/lib/types";
 import { formatMoney, timeAgo } from "@/lib/format";
+import { cacheRun } from "@/lib/runCache";
 import { StatusStamp } from "./StatusStamp";
 
 export function RunHistoryTable({ runs }: { runs: RunSummary[] }) {
@@ -35,7 +36,10 @@ export function RunHistoryTable({ runs }: { runs: RunSummary[] }) {
           {runs.map((run) => (
             <tr
               key={run.id}
-              onClick={() => router.push(`/runs/${run.id}`)}
+              onClick={() => {
+                cacheRun(run);
+                router.push(`/runs/${run.id}`);
+              }}
               className="border-b border-line last:border-0 cursor-pointer hover:bg-paper transition-colors"
             >
               <td className="px-4 py-3">

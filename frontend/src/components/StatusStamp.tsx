@@ -6,10 +6,10 @@ export function StatusStamp({ status, size = "md" }: { status: RunStatus; size?:
   const isLive = status === "queued" || status === "running";
   return (
     <span
-      className={`stamp inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-semibold uppercase ${
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-display font-semibold uppercase tracking-wide ${
         size === "sm" ? "text-[10px]" : "text-xs"
       }`}
-      style={{ color: meta.color, borderColor: meta.color, backgroundColor: meta.soft }}
+      style={{ color: meta.color, backgroundColor: meta.soft }}
     >
       {isLive && (
         <span
