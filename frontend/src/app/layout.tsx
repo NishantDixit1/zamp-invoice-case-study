@@ -22,7 +22,7 @@ const dataMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ledger | Invoice Intake",
+  title: "PS-1 | Invoice Assignment",
   description: "AP invoice processing: PDF to decision, Zamp case study",
 };
 
@@ -37,10 +37,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto max-w-[1680px] px-8 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-baseline gap-2">
               <span className="font-display text-xl font-semibold tracking-tight text-ink">
-                Ledger
+                PS-1
               </span>
               <span className="font-data text-xs uppercase tracking-widest text-ink-soft">
-                Invoice Intake
+                Invoice Assignment
               </span>
             </Link>
             <nav className="font-data text-xs uppercase tracking-widest text-ink-soft">

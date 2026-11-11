@@ -11,6 +11,7 @@ import { StageLadder } from "@/components/StageLadder";
 import { CheckList } from "@/components/CheckList";
 import { ExtractedFieldsPanel } from "@/components/ExtractedFieldsPanel";
 import { POReferenceCard } from "@/components/POReferenceCard";
+import { RunDetailSkeleton } from "@/components/RunDetailSkeleton";
 
 export default function RunDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -62,11 +63,7 @@ export default function RunDetailPage() {
   }
 
   if (!run) {
-    return (
-      <div className="mx-auto max-w-3xl px-6 py-16 text-center text-sm text-ink-soft">
-        Loading run...
-      </div>
-    );
+    return <RunDetailSkeleton />;
   }
 
   const checks =

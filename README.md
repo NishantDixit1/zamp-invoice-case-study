@@ -1,4 +1,4 @@
-# Ledger | Invoice Intake
+# PS-1 | Invoice Assignment
 
 Zamp AI Solutions Associate case study, PS-1 (Finance / AP): a working process that
 takes an invoice PDF as input and produces a clear, reasoned decision (approved,
