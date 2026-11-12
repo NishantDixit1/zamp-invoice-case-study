@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pdfplumber
 
-from app.config import ANTHROPIC_MODEL, BASE_DIR
+from app.config import ANTHROPIC_MODEL
 
 MIN_TEXT_CHARS_FOR_TEXT_MODE = 60
 CLI_TIMEOUT_SECONDS = 120
@@ -100,7 +100,9 @@ async def extract_invoice_fields(pdf_path: Path) -> dict:
     raw_text = _extract_text(pdf_path)
     method = "text" if len(raw_text) >= MIN_TEXT_CHARS_FOR_TEXT_MODE else "vision"
 
-    relative_path = pdf_path.resolve().relative_to(BASE_DIR)
+    # Run the CLI with cwd set to the file's own directory (not a fixed project
+    # root) since uploads may live on a separate mounted volume in production.
+    pdf_path = pdf_path.resolve()
     scan_hint = (
         "This document has no machine-readable text layer (it's a scanned image) "
         "so read it visually, page by page."
@@ -108,11 +110,11 @@ async def extract_invoice_fields(pdf_path: Path) -> dict:
         else "This document has a normal text layer."
     )
     prompt = (
-        f"Use the Read tool to open the invoice PDF at '{relative_path}'. {scan_hint}\n"
+        f"Use the Read tool to open the invoice PDF at '{pdf_path.name}'. {scan_hint}\n"
         f"Then extract its fields.\n\n{SCHEMA_INSTRUCTIONS}"
     )
 
-    data = await _run_claude_cli(prompt, cwd=BASE_DIR)
+    data = await _run_claude_cli(prompt, cwd=pdf_path.parent)
 
     missing = data.get("missing_or_unclear_fields") or []
     confidence = 0.97 - (0.12 * len(missing))

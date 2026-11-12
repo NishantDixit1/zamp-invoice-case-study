@@ -1,0 +1,25 @@
+app = "zamp-invoice-api"
+primary_region = "sin"
+
+[build]
+
+[mounts]
+  source = "invoices_data"
+  destination = "/data"
+
+[env]
+  DATABASE_URL = "sqlite:////data/invoices.db"
+  UPLOADS_DIR = "/data/uploads"
+  ANTHROPIC_MODEL = "claude-sonnet-5"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

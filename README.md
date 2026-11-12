@@ -4,6 +4,13 @@ Zamp AI Solutions Associate case study, PS-1 (Finance / AP): a working process t
 takes an invoice PDF as input and produces a clear, reasoned decision (approved,
 flagged, or rejected) as output, with every step of the reasoning visible.
 
+**Live:** https://zamp-invoice-assignment.vercel.app
+**API:** https://zamp-invoice-api.fly.dev
+
+Open the live link, click any scenario under "Test scenarios," and watch the run
+execute stage by stage. The backend sleeps when idle, so the very first request after
+a quiet period takes a few extra seconds to wake the machine.
+
 ## What it does
 
 1. An invoice PDF comes in (uploaded, or launched from the built-in sample library).
@@ -78,8 +85,9 @@ cd ../frontend
 npm install
 ```
 
-`frontend/.env.local` already points at `http://localhost:8123`. Change
-`NEXT_PUBLIC_API_BASE` there if the backend runs elsewhere.
+The frontend defaults to `http://localhost:8123` for the API. To point it elsewhere,
+set `NEXT_PUBLIC_API_BASE` (in `frontend/.env.local` locally, or as a project
+environment variable when deploying).
 
 ## Run
 
@@ -98,6 +106,27 @@ cd frontend && npm run dev -- --port 4200
 ```
 
 Open `http://localhost:4200`.
+
+## Deployment
+
+The backend runs on Fly.io as a Docker container that bundles the Claude Code CLI, with
+a mounted volume at `/data` holding the SQLite database and uploaded PDFs so runs
+survive restarts. The frontend is a Next.js app on Vercel pointed at that API.
+
+```bash
+# Backend (from backend/)
+flyctl secrets set CLAUDE_CODE_OAUTH_TOKEN="<token from `claude setup-token`>" --app zamp-invoice-api
+flyctl deploy
+
+# Frontend (from frontend/)
+vercel env add NEXT_PUBLIC_API_BASE production   # https://zamp-invoice-api.fly.dev
+vercel deploy --prod
+```
+
+The deployed backend authenticates the same way as local, via
+`CLAUDE_CODE_OAUTH_TOKEN` rather than a metered API key. Note that this means a public
+deployment runs extraction against a personal Claude subscription, so the live link is
+best treated as a demo rather than something to leave open indefinitely.
 
 ## Edge cases (4 required, plus 1 bonus)
 
@@ -118,11 +147,11 @@ reference and an amount inside tolerance. It auto-approves.
 
 ## Assumptions made (ambiguity in the brief)
 
-- **"A link to your process, live and runnable"**: treated as a cloneable repo with a
-  one-command start script, since the process is re-run live in the follow-up
-  interview anyway, and extraction runs against a personal Claude subscription login
-  rather than an API key, which a public always-on deployment can't carry. Happy to
-  wire up a hosted version with its own API key if that's actually wanted.
+- **Extraction auth**: the process shells out to the Claude Code CLI against a
+  subscription login rather than calling the Messages API with a metered key. That
+  choice is deliberate for cost, but it does mean the public deployment is backed by a
+  personal subscription. A production version would use a scoped API key with its own
+  billing and rate limits.
 - **PO ledger and vendor master data are self-authored** (per the FAQ, no real data
   required), designed specifically to make each edge case's logic meaningful rather
   than cosmetic.

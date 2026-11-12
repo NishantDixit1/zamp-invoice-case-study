@@ -1,0 +1,9 @@
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+invoices.db
+test_matching.db
+uploads/*
+!uploads/.gitkeep
+.env
