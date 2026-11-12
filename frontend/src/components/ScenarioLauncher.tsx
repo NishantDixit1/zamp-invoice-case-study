@@ -35,28 +35,28 @@ export function ScenarioLauncher({ samples }: { samples: SampleInvoice[] }) {
 
   return (
     <section className="border border-line bg-paper-raised h-full flex flex-col">
-      <header className="flex items-center justify-between border-b border-line px-4 h-10 shrink-0">
+      <header className="flex items-center justify-between border-b border-line px-4 h-9 shrink-0">
         <h2 className="caption">Prepared scenarios</h2>
-        <span className="caption">Expected outcome</span>
+        <span className="font-data text-[10px] text-ink-soft">expected outcome on each</span>
       </header>
-      <ul className="flex-1">
+      <ul className="grid sm:grid-cols-2 xl:grid-cols-4 gap-px bg-line flex-1">
         {samples.map((s) => {
           const outcome = EXPECTED_OUTCOME[s.id];
           const meta = outcome ? STATUS_META[outcome] : null;
           const isLaunching = launchingId === s.id;
           return (
-            <li key={s.id} className="border-b border-line last:border-0">
+            <li key={s.id} className="bg-paper-raised min-w-0">
               <button
                 onClick={() => launch(s.id)}
                 disabled={launchingId !== null}
-                className="w-full text-left px-4 py-2.5 transition-colors hover:bg-paper-sunken disabled:opacity-40 group"
+                className="h-full w-full text-left px-3.5 py-3 flex flex-col gap-1 transition-colors hover:bg-paper-sunken disabled:opacity-40 group"
               >
-                <div className="flex items-baseline gap-3">
-                  <span className="text-[13px] font-medium text-ink flex-1 group-hover:text-accent transition-colors">
+                <div className="flex items-start justify-between gap-2 w-full">
+                  <span className="text-[13px] leading-snug font-medium text-ink group-hover:text-accent transition-colors">
                     {s.label}
                   </span>
                   {isLaunching ? (
-                    <span className="caption" style={{ color: "var(--accent)" }}>
+                    <span className="caption shrink-0" style={{ color: "var(--accent)" }}>
                       Running
                     </span>
                   ) : (
@@ -70,7 +70,7 @@ export function ScenarioLauncher({ samples }: { samples: SampleInvoice[] }) {
                     )
                   )}
                 </div>
-                <p className="text-xs text-ink-soft leading-snug mt-0.5 pr-16">{s.description}</p>
+                <p className="text-[11px] text-ink-soft leading-snug">{s.description}</p>
               </button>
             </li>
           );

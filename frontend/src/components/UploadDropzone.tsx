@@ -65,6 +65,11 @@ export function UploadDropzone() {
             Drop an invoice PDF
           </p>
           <p className="caption mt-1.5">or click to browse</p>
+          <p className="mt-4 font-data text-[10px] text-ink-soft leading-relaxed">
+            One invoice per file. The engine reads it, matches it to a PO,
+            <br />
+            and returns a decision with every check it ran.
+          </p>
         </>
       )}
       {error && (
