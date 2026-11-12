@@ -6,6 +6,7 @@ from typing import Optional
 
 from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
 from app.config import UPLOADS_DIR, SAMPLE_DATA_DIR
@@ -98,6 +99,69 @@ def get_run(run_id: str, db: Session = Depends(get_db)):
     if run is None:
         raise HTTPException(404, "Run not found")
     return run
+
+
+def _run_file_path(run_id: str, db: Session) -> Path:
+    """Resolve a run's stored PDF, refusing anything outside the uploads directory."""
+    run = db.query(InvoiceRun).filter(InvoiceRun.id == run_id).first()
+    if run is None or not run.file_path:
+        raise HTTPException(404, "Run not found")
+
+    path = Path(run.file_path).resolve()
+    if not path.is_file() or UPLOADS_DIR.resolve() not in path.parents:
+        raise HTTPException(404, "Invoice file is no longer on disk")
+    return path
+
+
+@app.get("/api/runs/{run_id}/file")
+def get_run_file(run_id: str, db: Session = Depends(get_db)):
+    """Serve the original invoice PDF so a reviewer can read it next to the decision."""
+    run = db.query(InvoiceRun).filter(InvoiceRun.id == run_id).first()
+    path = _run_file_path(run_id, db)
+    return FileResponse(path, media_type="application/pdf", filename=run.filename)
+
+
+@app.get("/api/runs/{run_id}/document")
+def get_run_document_meta(run_id: str, db: Session = Depends(get_db)):
+    """Page count for the viewer, so it can show pager controls without fetching an image."""
+    import fitz  # PyMuPDF
+
+    path = _run_file_path(run_id, db)
+    doc = fitz.open(path)
+    try:
+        return {"page_count": doc.page_count}
+    finally:
+        doc.close()
+
+
+@app.get("/api/runs/{run_id}/preview")
+def get_run_preview(run_id: str, page: int = 0, db: Session = Depends(get_db)):
+    """
+    Render a page of the invoice to PNG. Browsers vary a lot in whether they
+    will display an embedded PDF inline, so the UI shows this image and keeps
+    the raw PDF behind a download link.
+    """
+    import fitz  # PyMuPDF
+
+    path = _run_file_path(run_id, db)
+    doc = fitz.open(path)
+    try:
+        page_count = doc.page_count
+        if page < 0 or page >= page_count:
+            raise HTTPException(404, "Page out of range")
+        pixmap = doc.load_page(page).get_pixmap(dpi=130)
+        png_bytes = pixmap.tobytes("png")
+    finally:
+        doc.close()
+
+    return Response(
+        content=png_bytes,
+        media_type="image/png",
+        headers={
+            "X-Page-Count": str(page_count),
+            "Access-Control-Expose-Headers": "X-Page-Count",
+        },
+    )
 
 
 @app.get("/api/pos", response_model=list[PurchaseOrderOut])

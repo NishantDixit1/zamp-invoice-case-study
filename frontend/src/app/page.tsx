@@ -10,16 +10,15 @@ import { Skeleton } from "@/components/Skeleton";
 
 function NewRunSkeleton() {
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_1.6fr] items-stretch">
-      <Skeleton className="h-64 lg:h-full" />
-      <div className="rounded-md border border-line bg-paper-raised p-4">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-3 w-64 mt-2" />
-        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="h-16" />
-          ))}
-        </div>
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] items-stretch">
+      <Skeleton className="h-56 lg:h-full" />
+      <div className="border border-line bg-paper-raised">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="border-b border-line last:border-0 px-4 py-2.5">
+            <Skeleton className="h-3.5 w-48" />
+            <Skeleton className="h-2.5 w-full max-w-md mt-2" />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -27,9 +26,11 @@ function NewRunSkeleton() {
 
 function RunHistorySkeleton() {
   return (
-    <div className="rounded-md border border-line bg-paper-raised p-4 space-y-3">
+    <div className="border border-line bg-paper-raised">
       {Array.from({ length: 4 }).map((_, i) => (
-        <Skeleton key={i} className="h-10" />
+        <div key={i} className="border-b border-line last:border-0 px-4 py-3">
+          <Skeleton className="h-4" />
+        </div>
       ))}
     </div>
   );
@@ -77,44 +78,40 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1680px] px-8 py-10">
-      <div className="flex items-end justify-between flex-wrap gap-4">
+    <div className="mx-auto max-w-[1680px] px-8 py-8">
+      <div className="flex items-end justify-between flex-wrap gap-4 border-b border-line-strong pb-5">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-ink">
+          <h1 className="font-display text-[28px] leading-tight font-semibold text-ink">
             Invoice processing
           </h1>
-          <p className="mt-1 text-sm text-ink-soft max-w-xl">
-            Submit an invoice PDF and watch it move from extraction to a reasoned
-            approve, flag, or reject decision against the purchase order ledger.
+          <p className="mt-1.5 text-sm text-ink-soft max-w-2xl leading-relaxed">
+            Submit an invoice PDF. The process reads it, matches it against the purchase
+            order ledger, and returns an approve, flag, or reject decision with every
+            check it ran.
           </p>
         </div>
         <button
           onClick={handleReset}
           disabled={isResetting || isLoading}
-          className="font-data text-xs uppercase tracking-widest text-ink-soft border border-line rounded-sm px-3 py-2 hover:border-rejected hover:text-rejected transition-colors disabled:opacity-50"
+          className="caption border border-line px-3 py-2 hover:border-rejected hover:text-rejected transition-colors disabled:opacity-40"
         >
-          {isResetting ? "Resetting..." : "Reset demo data"}
+          {isResetting ? "Resetting" : "Reset demo data"}
         </button>
       </div>
 
-      <section className="mt-10">
-        <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft mb-3">
-          New run
-        </h2>
+      <section className="mt-6">
         {isLoading ? (
           <NewRunSkeleton />
         ) : (
-          <div className="grid gap-4 lg:grid-cols-[1fr_1.6fr] items-stretch">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] items-stretch">
             <UploadDropzone />
             <ScenarioLauncher samples={samples} />
           </div>
         )}
       </section>
 
-      <section className="mt-10">
-        <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft mb-3">
-          Run history
-        </h2>
+      <section className="mt-8">
+        <h2 className="caption mb-2.5">Run history</h2>
         {isLoading ? <RunHistorySkeleton /> : <RunHistoryTable runs={runs} />}
       </section>
     </div>

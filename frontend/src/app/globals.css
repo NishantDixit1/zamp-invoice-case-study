@@ -2,22 +2,28 @@
 
 :root {
   color-scheme: dark;
-  --paper: #0b0d11;
-  --paper-raised: #16181d;
-  --paper-sunken: #0e1013;
-  --ink: #f1f2f4;
-  --ink-soft: #949ba6;
-  --line: #262a33;
 
-  --accent: #818cf8;
-  --accent-soft: rgba(129, 140, 248, 0.14);
+  /* Ground has a faint green cast so it reads as an instrument panel
+     rather than the usual neutral-charcoal dashboard. */
+  --paper: #0c0f0d;
+  --paper-raised: #121613;
+  --paper-sunken: #090b0a;
+  --ink: #e9ece7;
+  --ink-soft: #7c857d;
+  --line: #1f2621;
+  --line-strong: #2d352f;
 
-  --approved: #4ade80;
-  --approved-soft: rgba(74, 222, 128, 0.14);
-  --flagged: #fbbf24;
-  --flagged-soft: rgba(251, 191, 36, 0.14);
-  --rejected: #f87171;
-  --rejected-soft: rgba(248, 113, 113, 0.14);
+  /* Ochre, the colour of a stamped ledger. Deliberately not the
+     indigo/violet that every generated dashboard reaches for. */
+  --accent: #d9a441;
+  --accent-soft: rgba(217, 164, 65, 0.12);
+
+  --approved: #6aa87f;
+  --approved-soft: rgba(106, 168, 127, 0.12);
+  --flagged: #d9a441;
+  --flagged-soft: rgba(217, 164, 65, 0.12);
+  --rejected: #c4614f;
+  --rejected-soft: rgba(196, 97, 79, 0.12);
 }
 
 @theme inline {
@@ -27,6 +33,7 @@
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-approved: var(--approved);
@@ -43,6 +50,16 @@
 
 * {
   border-color: var(--line);
+}
+
+/* Micro-label used throughout: this is a document-processing tool, so
+   field labels read like form captions, not web-app headings. */
+.caption {
+  font-family: var(--font-data);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {

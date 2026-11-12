@@ -34,47 +34,48 @@ export function ScenarioLauncher({ samples }: { samples: SampleInvoice[] }) {
   }
 
   return (
-    <div className="rounded-md border border-line bg-paper-raised p-4 h-full">
-      <h2 className="font-display text-sm font-semibold text-ink">Test scenarios</h2>
-      <p className="mt-1 text-xs text-ink-soft">
-        Pre-built invoices covering the happy path and each edge case. Expected
-        outcome shown as a dot.
-      </p>
-      <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <section className="border border-line bg-paper-raised h-full flex flex-col">
+      <header className="flex items-center justify-between border-b border-line px-4 h-10 shrink-0">
+        <h2 className="caption">Prepared scenarios</h2>
+        <span className="caption">Expected outcome</span>
+      </header>
+      <ul className="flex-1">
         {samples.map((s) => {
           const outcome = EXPECTED_OUTCOME[s.id];
           const meta = outcome ? STATUS_META[outcome] : null;
+          const isLaunching = launchingId === s.id;
           return (
-            <li key={s.id}>
+            <li key={s.id} className="border-b border-line last:border-0">
               <button
                 onClick={() => launch(s.id)}
                 disabled={launchingId !== null}
-                className="w-full h-full text-left rounded-sm border border-line px-3 py-2.5 transition-colors hover:border-accent hover:bg-accent-soft disabled:opacity-50"
+                className="w-full text-left px-4 py-2.5 transition-colors hover:bg-paper-sunken disabled:opacity-40 group"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-sm font-medium text-ink leading-snug">{s.label}</span>
-                  {meta && (
-                    <span
-                      title={`Expected: ${meta.label}`}
-                      className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full"
-                      style={{ backgroundColor: meta.color }}
-                    />
+                <div className="flex items-baseline gap-3">
+                  <span className="text-[13px] font-medium text-ink flex-1 group-hover:text-accent transition-colors">
+                    {s.label}
+                  </span>
+                  {isLaunching ? (
+                    <span className="caption" style={{ color: "var(--accent)" }}>
+                      Running
+                    </span>
+                  ) : (
+                    meta && (
+                      <span
+                        className="font-data text-[10px] uppercase tracking-[0.1em] shrink-0"
+                        style={{ color: meta.color }}
+                      >
+                        {meta.label}
+                      </span>
+                    )
                   )}
                 </div>
-                {launchingId === s.id ? (
-                  <span className="font-data text-[10px] uppercase tracking-widest text-accent">
-                    Running...
-                  </span>
-                ) : (
-                  <p className="mt-0.5 text-xs text-ink-soft leading-snug line-clamp-2">
-                    {s.description}
-                  </p>
-                )}
+                <p className="text-xs text-ink-soft leading-snug mt-0.5 pr-16">{s.description}</p>
               </button>
             </li>
           );
         })}
       </ul>
-    </div>
+    </section>
   );
 }

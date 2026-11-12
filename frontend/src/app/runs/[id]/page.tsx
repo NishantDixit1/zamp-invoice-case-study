@@ -12,6 +12,7 @@ import { CheckList } from "@/components/CheckList";
 import { ExtractedFieldsPanel } from "@/components/ExtractedFieldsPanel";
 import { POReferenceCard } from "@/components/POReferenceCard";
 import { RunDetailSkeleton } from "@/components/RunDetailSkeleton";
+import { DocumentPane } from "@/components/DocumentPane";
 
 export default function RunDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -83,69 +84,84 @@ export default function RunDetailPage() {
   const newer = historyIndex > 0 ? history[historyIndex - 1] : undefined;
 
   return (
-    <div className="mx-auto max-w-[1680px] px-8 py-10">
+    <div className="mx-auto max-w-[1680px] px-8 py-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link href="/" className="font-data text-xs uppercase tracking-widest text-ink-soft hover:text-accent">
-          ← Back to dashboard
+        <Link href="/" className="caption hover:text-accent transition-colors">
+          &larr; All runs
         </Link>
-        <div className="flex items-center gap-2 font-data text-xs uppercase tracking-widest">
+        <div className="flex items-center gap-3">
           <button
             disabled={!older}
             onClick={() => older && router.push(`/runs/${older.id}`)}
-            className="text-ink-soft hover:text-accent disabled:opacity-30 disabled:hover:text-ink-soft"
+            className="caption hover:text-accent disabled:opacity-30 disabled:hover:text-ink-soft transition-colors"
           >
-            ← Older
+            &larr; Older
           </button>
-          <span className="text-line">|</span>
+          <span className="h-3 w-px bg-line-strong" />
           <button
             disabled={!newer}
             onClick={() => newer && router.push(`/runs/${newer.id}`)}
-            className="text-ink-soft hover:text-accent disabled:opacity-30 disabled:hover:text-ink-soft"
+            className="caption hover:text-accent disabled:opacity-30 disabled:hover:text-ink-soft transition-colors"
           >
-            Newer →
+            Newer &rarr;
           </button>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-b border-line-strong pb-4">
+        <div className="flex items-baseline gap-3 flex-wrap">
           <h1 className="font-display text-2xl font-semibold text-ink">{run.filename}</h1>
-          <p className="font-data text-xs text-ink-soft mt-1">Run {run.id}</p>
+          <span className="font-data text-[11px] text-ink-soft">{run.id}</span>
+          {run.scenario_label && (
+            <span className="caption">{run.scenario_label}</span>
+          )}
         </div>
         <StatusStamp status={run.status} />
       </div>
 
       {run.error && (
-        <div className="mt-4 rounded-sm bg-rejected-soft px-3 py-2 text-sm text-rejected">
+        <div
+          className="mt-4 border-l-2 px-3 py-2 font-data text-[13px]"
+          style={{
+            borderLeftColor: "var(--rejected)",
+            backgroundColor: "var(--rejected-soft)",
+            color: "var(--rejected)",
+          }}
+        >
           {run.error}
         </div>
       )}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[340px_1fr] items-start">
-        <div className="rounded-md border border-line bg-paper-raised p-5 lg:sticky lg:top-24">
-          <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft mb-5">
-            Pipeline
-          </h2>
-          <StageLadder stages={run.stages} runStartedAt={runStart} />
+      {/* Document on the left, what the process made of it on the right. */}
+      <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] items-start">
+        <div className="xl:sticky xl:top-20 space-y-5">
+          <DocumentPane runId={run.id} filename={run.filename} />
+          <section className="border border-line bg-paper-raised">
+            <header className="flex items-center border-b border-line px-4 h-10">
+              <h2 className="caption">Pipeline</h2>
+            </header>
+            <div className="px-4 py-2">
+              <StageLadder stages={run.stages} runStartedAt={runStart} />
+            </div>
+          </section>
         </div>
 
-        <div className="space-y-6">
-          <div className="rounded-md border border-line bg-paper-raised p-5">
-            <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft mb-3">
-              Decision
-            </h2>
-            {run.final_decision ? (
-              <div className="mb-4">
-                <StatusStamp status={run.status} />
-              </div>
-            ) : (
-              <p className="mb-4 text-sm text-ink-soft">Checks are still running.</p>
-            )}
-            <CheckList checks={checks} />
-          </div>
+        <div className="space-y-5">
+          <section className="border border-line bg-paper-raised">
+            <header className="flex items-center justify-between border-b border-line px-4 h-10">
+              <h2 className="caption">Decision trail</h2>
+              {run.final_decision && <StatusStamp status={run.status} size="sm" />}
+            </header>
+            <div className="px-4 py-2">
+              {!run.final_decision && (
+                <p className="py-2 text-sm text-ink-soft">Checks are still running.</p>
+              )}
+              <CheckList checks={checks} />
+            </div>
+          </section>
 
           {run.extracted_data && (
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 items-start">
               <ExtractedFieldsPanel data={run.extracted_data} />
               <POReferenceCard po={matchedPo} />
             </div>

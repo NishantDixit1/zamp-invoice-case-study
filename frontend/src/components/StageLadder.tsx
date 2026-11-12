@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import type { Stage } from "@/lib/types";
 import { elapsedLabel } from "@/lib/format";
 
+/**
+ * Stages read as timestamped log lines rather than a decorated timeline, so
+ * the elapsed column lines up and you can see where the time actually went.
+ */
 export function StageLadder({ stages, runStartedAt }: { stages: Stage[]; runStartedAt: string }) {
   const hasLiveStage = stages.some((s) => s.status === "running");
   const [, forceTick] = useState(0);
@@ -15,38 +19,36 @@ export function StageLadder({ stages, runStartedAt }: { stages: Stage[]; runStar
   }, [hasLiveStage]);
 
   if (stages.length === 0) {
-    return (
-      <p className="font-data text-xs text-ink-soft uppercase tracking-widest">
-        Waiting to start...
-      </p>
-    );
+    return <p className="caption">Waiting to start</p>;
   }
 
   return (
-    <ol className="relative border-l border-line pl-6">
+    <ol className="font-data text-[13px]">
       {stages.map((stage, i) => {
         const isRunning = stage.status === "running";
         const isError = stage.status === "error";
-        const dotColor = isError
+        const color = isError
           ? "var(--rejected)"
           : isRunning
             ? "var(--accent)"
             : "var(--approved)";
         return (
-          <li key={stage.name + i} className="mb-7 last:mb-0">
-            <span
-              className={`absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-paper-raised ${
-                isRunning ? "animate-pulse" : ""
-              }`}
-              style={{ backgroundColor: dotColor }}
-            />
-            <div className="flex items-baseline justify-between gap-4">
-              <h3 className="font-display text-base font-semibold text-ink">{stage.name}</h3>
-              <span className="font-data text-[11px] text-ink-soft tabular-nums shrink-0">
+          <li key={stage.name + i} className="border-t border-line py-2.5 first:border-t-0">
+            <div className="flex items-baseline gap-2.5">
+              <span
+                className={`inline-block h-1.5 w-1.5 shrink-0 translate-y-[-1px] ${
+                  isRunning ? "animate-pulse" : ""
+                }`}
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-ink font-medium flex-1">{stage.name}</span>
+              <span className="text-ink-soft tabular-nums text-[11px] shrink-0">
                 {elapsedLabel(runStartedAt, stage.finished_at)}
               </span>
             </div>
-            <p className="mt-1 text-sm text-ink-soft leading-relaxed">{stage.detail}</p>
+            <p className="font-body text-xs text-ink-soft leading-relaxed mt-1 pl-4">
+              {stage.detail}
+            </p>
           </li>
         );
       })}

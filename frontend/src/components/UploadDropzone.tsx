@@ -43,8 +43,8 @@ export function UploadDropzone() {
         if (file) submitFile(file);
       }}
       onClick={() => inputRef.current?.click()}
-      className={`flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-6 py-8 text-center transition-colors ${
-        isDragging ? "border-accent bg-accent-soft" : "border-line bg-paper-sunken"
+      className={`flex h-full cursor-pointer flex-col items-center justify-center border border-dashed px-6 py-8 text-center transition-colors ${
+        isDragging ? "border-accent bg-accent-soft" : "border-line-strong bg-paper-raised hover:border-accent"
       }`}
     >
       <input
@@ -58,16 +58,20 @@ export function UploadDropzone() {
         }}
       />
       {isSubmitting ? (
-        <p className="font-data text-sm text-ink-soft">Uploading...</p>
+        <p className="caption">Uploading</p>
       ) : (
         <>
-          <p className="font-display text-lg font-semibold text-ink">
-            Drop an invoice PDF here
+          <p className="font-display text-base font-semibold text-ink">
+            Drop an invoice PDF
           </p>
-          <p className="mt-1 text-sm text-ink-soft">or click to choose a file</p>
+          <p className="caption mt-1.5">or click to browse</p>
         </>
       )}
-      {error && <p className="mt-3 text-sm text-rejected">{error}</p>}
+      {error && (
+        <p className="mt-3 font-data text-xs" style={{ color: "var(--rejected)" }}>
+          {error}
+        </p>
+      )}
     </div>
   );
 }
